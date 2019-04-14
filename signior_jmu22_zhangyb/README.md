@@ -2,6 +2,7 @@
 Members: 
   Kevin Xia (signior@bu.edu, kevinxia787)
   Jeffrey Mu (jmu22@bu.edu, jmu22)
+  Yibin Zhang (zhangyb@bu.edu, JasonZhangyb)
 
 The question we are trying to answer is how big of a factor (if any) does establishing a power plant at a specific year that burns either waste, oil, coal, gas has any effect on the current and subsequent years' statistics of CO2 emissions, Earth surface temperatures, Ocean surface temperatures, and Sea level changes. Depending on how many power plants that burn fossil fuels, we should be able to see drastic changes as more and more power plants get initialized. The reasoning behind this intuition is that since power plants that burn fossil fuels release waste into the air, if they have an effect on the CO2 emissions then we'll see gradual increases in CO2 as the years go by, and this value could be scaled based on how many power plants get comissioned. 
 
