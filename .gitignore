@@ -111,7 +111,6 @@ ENV/
 auth.json
 *.iml
 *.xml
-.gitignore
 
 # exclude node_modules
 node_modules/
