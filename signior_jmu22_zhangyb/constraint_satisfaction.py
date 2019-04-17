@@ -70,16 +70,17 @@ class constraint_satisfaction(dml.Algorithm):
     countries_with_both = [row.get('Country Name') for row in carbon_emissions_dict if row.get('Country Name') in countries_with_power_plant_data]
 
 
+    # get all entries with countries in both sets
     power_plants_dict = [row for row in power_plants_dict if row.get('country') in countries_with_both]
     carbon_emissions_dict = [row for row in carbon_emissions_dict if row.get('Country Name') in countries_with_both]
     population_dict = [row for row in population_dict if row.get('Country Name') in countries_with_both]
 
-    with open('test.txt', 'w') as f:
-      print(power_plants_dict, file=f)  # Python 3.x
-    with open('test2.txt', 'w') as f:
-      print(carbon_emissions_dict, file=f)  # Python 3.x
-    with open('out.txt', 'w') as f:
-      print(population_dict, file=f)  # Python 3.x
+    # with open('test.txt', 'w') as f:
+    #   print(power_plants_dict, file=f)  # Python 3.x
+    # with open('test2.txt', 'w') as f:
+    #   print(carbon_emissions_dict, file=f)  # Python 3.x
+    # with open('out.txt', 'w') as f:
+    #   print(population_dict, file=f)  # Python 3.x
 
     # results of the constrait solving will be entered here
     resulting_dataset = []
@@ -94,7 +95,7 @@ class constraint_satisfaction(dml.Algorithm):
 
       power_plant_years = sorted(power_plant_data_row['years'])
       
-      
+      # computes average change before and after a power plant was established
       for curr_year in power_plant_years:
         pre_yearly = []
         post_yearly = []
