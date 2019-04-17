@@ -89,6 +89,9 @@ class constraint_satisfaction(dml.Algorithm):
     # results of the constrait solving will be entered here
     resulting_dataset = []
 
+    if (trial == True):
+      contries_with_both = random.sample(countries_with_both, 10)
+
     for country in countries_with_both:
       curr_row = {}
       curr_row['country'] = country
