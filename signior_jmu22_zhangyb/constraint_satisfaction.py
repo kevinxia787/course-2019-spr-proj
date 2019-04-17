@@ -97,48 +97,29 @@ class constraint_satisfaction(dml.Algorithm):
       population_data_row = list(filter(lambda row: row['Country Name'] == country, population_dict))[0]
 
       power_plant_years = sorted(power_plant_data_row['years'])
-      
-      # computes average change before and after a power plant was established
+
       for curr_year in power_plant_years:
-        pre_yearly = []
-        post_yearly = []
         if (curr_year > 2014):
           break
-        for year in range(1960, curr_year - 1):
-          key = str(year)
-          next_key = str(year + 1)
-          if (population_data_row.get(key) is None or carbon_emissions_row.get(key) is None):
-            continue
-          carbon_emission_curr = round(float(carbon_emissions_row.get(key)) * float(population_data_row.get(key)), 2)
-          carbon_emission_next = round(float(carbon_emissions_row.get(next_key)) * float(population_data_row.get(next_key)), 2)
-          delta_carbon = percentage_change(carbon_emission_curr, carbon_emission_next)
-          pre_yearly.append(delta_carbon)
-          # print(year, next_key, delta_carbon)
-        
-        for year in range(curr_year, 2014):
-          key = str(year)
-          next_key = str(year + 1)
-          if (population_data_row.get(key) is None or carbon_emissions_row.get(key) is None):
-            continue
-          carbon_emission_curr = round(float(carbon_emissions_row.get(key)) * float(population_data_row.get(key)), 2)
-          carbon_emission_next = round(float(carbon_emissions_row.get(next_key)) * float(population_data_row.get(next_key)), 2)
-          delta_carbon = percentage_change(carbon_emission_curr, carbon_emission_next)
-          post_yearly.append(delta_carbon)
-          # print(year, next_key, delta_carbon)
-        if (len(pre_yearly) == 0 or len(post_yearly) == 0):
+        if (carbon_emissions_row.get(str(curr_year)) is None or population_data_row.get(str(curr_year)) is None or carbon_emissions_row.get(str(curr_year - 1)) is None or population_data_row.get(str(curr_year - 1)) is None or carbon_emissions_row.get(str(curr_year + 1)) is None or population_data_row.get(str(curr_year + 1)) is None):
           continue
-        pre_avg_change = round(sum(pre_yearly) / len(pre_yearly), 5)
-        post_avg_change = round(sum(post_yearly) / len(post_yearly), 5)
+        year_curr = carbon_emissions_row.get(str(curr_year)) * population_data_row.get(str(curr_year))
+        prev_year = carbon_emissions_row.get(str(curr_year - 1)) * population_data_row.get(str(curr_year - 1))
+        post_year = carbon_emissions_row.get(str(curr_year + 1)) * population_data_row.get(str(curr_year + 1))
         
-        curr_row['data'].append({curr_year: (pre_avg_change, post_avg_change)})
-      resulting_dataset.append(curr_row) 
+        percentage_change_pre = percentage_change(prev_year, year_curr)
+        percentage_change_post = percentage_change(year_curr, post_year)
+        constraint_satisfied = percentage_change_pre < percentage_change_post
+        curr_row['data'].append({str(curr_year): (percentage_change_pre, percentage_change_post), 'constraint satisfied': constraint_satisfied})
+
+      resulting_dataset.append(curr_row)
     
     repo.dropCollection("countries_change_in_carbon_after_year")
     repo.createCollection("countries_change_in_carbon_after_year")
-    repo['signior_jmu22_zhangyb.countries_change_in_carbon_after_year'].insert_many(final_ds)
+    repo['signior_jmu22_zhangyb.countries_change_in_carbon_after_year'].insert_many(resulting_dataset)
     repo['signior_jmu22_zhangyb.countries_change_in_carbon_after_year'].metadata({'complete': True})
         
-    print(repo['signior_jmu22_zhangyb.power_plants_established_date_by_country'].metadata())
+    print(repo['signior_jmu22_zhangyb.countries_change_in_carbon_after_year'].metadata())
 
     repo.logout()
 
