@@ -53,11 +53,15 @@ class constraint_satisfaction(dml.Algorithm):
         row['Country Name'] = 'North Korea'
       elif row.get('Country Name') == 'Korea, Rep.':
         row['Country Name'] = 'South Korea'
+      elif row.get('Country Name') == 'United States':
+        row['Country Name'] = 'United States of America'
     for row in population_dict:
       if row.get('Country Name') == 'Korea, Dem. People’s Rep.':
         row['Country Name'] = 'North Korea'
       elif row.get('Country Name') == 'Korea, Rep.':
         row['Country Name'] = 'South Korea'
+      elif row.get('Country Name') == 'United States':
+        row['Country Name'] = 'United States of America'
     for row in carbon_emissions_dict:
       for year in range(1960, 2015):
         if (math.isnan(row[str(year)])):
@@ -68,7 +72,6 @@ class constraint_satisfaction(dml.Algorithm):
 
     # List of all countries with emission data and fossil fuel power plants established
     countries_with_both = [row.get('Country Name') for row in carbon_emissions_dict if row.get('Country Name') in countries_with_power_plant_data]
-
 
     # get all entries with countries in both sets
     power_plants_dict = [row for row in power_plants_dict if row.get('country') in countries_with_both]
@@ -129,9 +132,18 @@ class constraint_satisfaction(dml.Algorithm):
         
         curr_row['data'].append({curr_year: (pre_avg_change, post_avg_change)})
       resulting_dataset.append(curr_row) 
-    print(resulting_dataset)
-        
     
+    repo.dropCollection("countries_change_in_carbon_after_year")
+    repo.createCollection("countries_change_in_carbon_after_year")
+    repo['signior_jmu22_zhangyb.countries_change_in_carbon_after_year'].insert_many(final_ds)
+    repo['signior_jmu22_zhangyb.countries_change_in_carbon_after_year'].metadata({'complete': True})
+        
+    print(repo['signior_jmu22_zhangyb.power_plants_established_date_by_country'].metadata())
+
+    repo.logout()
+
+    endTime = datetime.datetime.now()
+    return {"start": startTime, "end": endTime}
     
   
   @staticmethod
