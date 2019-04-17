@@ -5,6 +5,7 @@ import uuid
 import pandas as pd 
 import numpy as np
 import math
+import json
 
 from dateutil.parser import parse
 
@@ -129,9 +130,41 @@ class constraint_satisfaction(dml.Algorithm):
   
   @staticmethod
   def provenance(doc = prov.model.ProvDocument(), startTime = None, endTime = None):
+    doc.add_namespace('alg', 'http://datamechanics.io/algorithm/signior_jmu22.zhangyb')
+    doc.add_namespace('dat', 'http://datamechanics.io/data/signior_jmu22')
+    doc.add_namespace('ont', 'http://datamechanics.io/ontology#')
+    doc.add_namespace('log', 'http://datamechanics.io/log/')
+
+    this_script = doc.agent('alg:signior_jmu22_zhangyb#constraint_satisfaction', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extention':'py'})
+    resource_carbon_emissions = doc.entity('dat:signior_jmu22_zhangyb#carbon_emissions', {prov.model.PROV_LABEL: 'Yearly carbon emissions data', prov.model.PROV_TYPE:'ont:DataSet'})
+    get_carbon_emissions= doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime) 
+    doc.wasAssociatedWith(get_carbon_emissions, this_script)
+    doc.usage(get_carbon_emissions, resource_carbon_emissions, startTime, None, {prov.model.PROV_TYPE:'ont:Retrieval'})
+
+    resource_population = doc.entity('dat:signior_jmu22_zhangyb#population', {prov.model.PROV_LABEL: 'population data', prov.model.PROV_TYPE:'ont:DataSet'})
+    get_resource_population = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
+    doc.wasAssociatedWith(get_resource_population, this_script)
+    doc.usage(get_resource_population, resource_population, startTime, None, {prov.model.PROV_TYPE:'ont:Retrieval'})
+
+    resource_power_plant = doc.entity('dat:signior_jmu22_zhangyb#power_plant', {prov.model.PROV_LABEL: 'carbon emissions data', prov.model.PROV_TYPE:'ont:DataSet'})
+    get_power_plant = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
+    doc.wasAssociatedWith(get_power_plant, this_script)
+    doc.usage(get_power_plant, resource_power_plant, startTime, None, {prov.model.PROV_TYPE:'ont:Retrieval'})
+
+    get_carbon_change = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
+    carbon_change = doc.entity('dat:signior_jmu22_zhangyb#constraint_satisfaction', {prov.model.PROV_LABEL: 'Change in metric tons of CO2 before and after a powerplant is established', prov.model.PROV_TYPE: 'ont:DataSet'})
+
+    doc.wasAttributedTo(carbon_change, this_script)
+    doc.wasGeneratedBy(carbon_change, get_carbon_change, endTime)
+    doc.wasDerivedFrom(carbon_change, resource_carbon_emissions, get_carbon_change, get_carbon_change, get_carbon_change)
+    doc.wasDerivedFrom(carbon_change, resource_population, get_carbon_change, get_carbon_change, get_carbon_change)
+    doc.wasDerivedFrom(carbon_change, resource_power_plant, get_carbon_change, get_carbon_change, get_carbon_change)
+
     return doc
 
-
-constraint_satisfaction.execute()
+# constraint_satisfaction.execute()
+# doc = constraint_satisfaction.provenance()
+# print(doc.get_provn())
+# print(json.dumps(json.loads(doc.serialize()), indent=4))
 
     
