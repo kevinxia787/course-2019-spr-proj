@@ -19,8 +19,6 @@ For project two we are utilizing the same datasets we retrieved in project one. 
 
 Our results for the constraint satisfaction didn't support this, as some countries had their CO2 emissions increase after a power plant was established, and some did not. In order to back this up with more data, we performed a linear regression on the data for each country, where the X value was the year, and the Y value was the change in carbon emissions, and calculated the correlation coeffecient with all of the before a powerplant was established values and all of the after a powerplant was established values. 
 
-We also pulled out a subset of data that matched our constraint, and performed a correlation coefficient test between the change in metric tons of CO2 emitted and the number of powerplants established. We would expect that a higher number of power plants established corresponds to a higher correlation of increases.
-
 Our conclusions for this project basically reflect how the world is naturally. In the beginning we wanted to prove that there is a significant impact from fossil fuel based powerplants on carbon emissions. Based on the results of project two, we can conclude that power plants have an effect, but not to the extent we thought initially. The reasoning behind this is there are other things that could impact carbon emissions (e.g. transportation (cars, trains, planes, etc)). 
 
 
