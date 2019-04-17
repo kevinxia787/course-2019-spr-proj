@@ -8,9 +8,9 @@ import urllib.request
 import pandas as pd
 
 class carbon_emissions(dml.Algorithm):
-  contributor = 'signior_jmu22'
+  contributor = 'signior_jmu22.zhangyb'
   reads = []
-  writes = ['signior_jmu22.carbon_emissions']
+  writes = ['signior_jmu22_zhangyb.carbon_emissions']
 
   @staticmethod
   def execute(trial = False):
@@ -27,6 +27,7 @@ class carbon_emissions(dml.Algorithm):
     for i in range(1960, 2015):
       filter_values.append(str(i))
     new_df = df.filter(filter_values)
+    print(new_df.head(5))
     carbon_emissions_dict = new_df.to_dict(orient='records')
 
     # print(carbon_emissions_dict)
