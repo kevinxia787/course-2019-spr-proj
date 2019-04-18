@@ -35,6 +35,9 @@ class linear_regression(dml.Algorithm):
     templist = [] 
     range_arr = list(range(1960, 2018))
 
+    if (trial == True):
+        results = random.sample(results, 10)
+
     # gets country and the array of carbon increases before stored in temp x and array of carbon increases after a power plant in y
     for rows in results:
         tempX = []
@@ -80,16 +83,16 @@ class linear_regression(dml.Algorithm):
             
  #plots linear regression in an external file 
                     
-    with PdfPages('linreg_countries.pdf') as pdf:
-        #item[1] == x item[2] = y
-        for item in templist:
-            corrcoeff = round(np.corrcoef(item[1], item[2])[1,0],2)
-            pl = polyfit(item[1], item[2], 1)
-            plt.figure()
-            plt.figtext(0.1,0.9,"Country: " + str(item[0]) +" CorrCoeff: "+str(corrcoeff) + "Average Mean of Change: " + str(round(country.get(item[0]),2)))
-            plt.plot(item[1], item[2], 'o')
-            plt.plot(item[1],np.polyval(pl,item[1]), 'r--')
-            pdf.savefig()
+    # with PdfPages('linreg_countries.pdf') as pdf:
+    #     #item[1] == x item[2] = y
+    #     for item in templist:
+    #         corrcoeff = round(np.corrcoef(item[1], item[2])[1,0],2)
+    #         pl = polyfit(item[1], item[2], 1)
+    #         plt.figure()
+    #         plt.figtext(0.1,0.9,"Country: " + str(item[0]) +" CorrCoeff: "+str(corrcoeff) + "Average Mean of Change: " + str(round(country.get(item[0]),2)))
+    #         plt.plot(item[1], item[2], 'o')
+    #         plt.plot(item[1],np.polyval(pl,item[1]), 'r--')
+    #         pdf.savefig()
     
            
     #concatenate everything into (country, tempx, tempx, corcoeff, average mean of change)
