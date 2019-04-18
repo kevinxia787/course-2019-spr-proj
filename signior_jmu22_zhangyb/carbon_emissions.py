@@ -8,9 +8,9 @@ import urllib.request
 import pandas as pd
 
 class carbon_emissions(dml.Algorithm):
-  contributor = 'signior_jmu22'
+  contributor = 'signior_jmu22.zhangyb'
   reads = []
-  writes = ['signior_jmu22.carbon_emissions']
+  writes = ['signior_jmu22_zhangyb.carbon_emissions']
 
   @staticmethod
   def execute(trial = False):
@@ -72,8 +72,8 @@ class carbon_emissions(dml.Algorithm):
 
 
 
-# comment this when submitting, just for testing purposes
-carbon_emissions.execute()
+# # comment this when submitting, just for testing purposes
+# carbon_emissions.execute()
 # doc = carbon_emissions.provenance()
 # print(doc.get_provn())
 # print(json.dumps(json.loads(doc.serialize()), indent=4))
