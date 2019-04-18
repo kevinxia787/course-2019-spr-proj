@@ -138,7 +138,7 @@ class fossil_fuel_plants(dml.Algorithm):
     return doc
 
 # comment this out when submitting
-fossil_fuel_plants.execute()
+# fossil_fuel_plants.execute()
 # doc = fossil_fuel_plants.provenance()
 # print(doc.get_provn())
 # print(json.dumps(json.loads(doc.serialize()), indent=4))

@@ -165,7 +165,7 @@ class constraint_satisfaction(dml.Algorithm):
 
     return doc
 
-constraint_satisfaction.execute()
+# constraint_satisfaction.execute()
 # doc = constraint_satisfaction.provenance()
 # print(doc.get_provn())
 # print(json.dumps(json.loads(doc.serialize()), indent=4))

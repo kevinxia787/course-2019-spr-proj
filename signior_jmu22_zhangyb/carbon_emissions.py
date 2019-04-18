@@ -72,8 +72,8 @@ class carbon_emissions(dml.Algorithm):
 
 
 
-# comment this when submitting, just for testing purposes
-carbon_emissions.execute()
+# # comment this when submitting, just for testing purposes
+# carbon_emissions.execute()
 # doc = carbon_emissions.provenance()
 # print(doc.get_provn())
 # print(json.dumps(json.loads(doc.serialize()), indent=4))

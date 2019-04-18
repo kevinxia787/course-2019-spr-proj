@@ -78,7 +78,7 @@ class land_surface_temp(dml.Algorithm):
 
 
 #comment this out before submitting, just for testing purposes
-land_surface_temp.execute()
-doc = land_surface_temp.provenance()
-print(doc.get_provn())
-print(json.dumps(json.loads(doc.serialize()), indent=4))
+# land_surface_temp.execute()
+# doc = land_surface_temp.provenance()
+# print(doc.get_provn())
+# print(json.dumps(json.loads(doc.serialize()), indent=4))
