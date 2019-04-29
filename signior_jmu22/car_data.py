@@ -45,6 +45,7 @@ class car_data(dml.Algorithm):
           continue
       car_data_new.append(new_row)
     
+    print(car_data_new)
     # print(car_data_new)
     repo.dropCollection("car_data")
     repo.createCollection("car_data")

@@ -139,7 +139,7 @@ class constraint_satisfaction(dml.Algorithm):
     doc.add_namespace('ont', 'http://datamechanics.io/ontology#')
     doc.add_namespace('log', 'http://datamechanics.io/log/')
 
-    this_script = doc.agent('alg:signior_jmu22#constraint_satisfaction', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extention':'py'})
+    this_script = doc.agent('alg:signior_jmu22#constraint_satisfaction', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
     resource_carbon_emissions = doc.entity('dat:signior_jmu22#carbon_emissions', {prov.model.PROV_LABEL: 'Yearly carbon emissions data', prov.model.PROV_TYPE:'ont:DataSet'})
     get_carbon_emissions= doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime) 
     doc.wasAssociatedWith(get_carbon_emissions, this_script)

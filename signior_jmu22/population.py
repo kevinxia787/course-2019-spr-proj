@@ -8,7 +8,7 @@ import urllib.request
 import pandas as pd
 
 class population(dml.Algorithm):
-  contributor = 'signior_jmu22.zhangyb'
+  contributor = 'signior_jmu22'
   reads = []
   writes = ['signior_jmu22.population']
 
