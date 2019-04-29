@@ -147,8 +147,8 @@ class linear_regression(dml.Algorithm):
 
 
 #comment this when submitting, just for testing purposes
-# linear_regression.execute()
-# doc = linear_regression.provenance()
-# print(doc.get_provn())
-# print(json.dumps(json.loads(doc.serialize()), indent=4))
+linear_regression.execute()
+doc = linear_regression.provenance()
+print(doc.get_provn())
+print(json.dumps(json.loads(doc.serialize()), indent=4))
   

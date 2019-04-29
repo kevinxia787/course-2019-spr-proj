@@ -45,7 +45,7 @@ class car_data(dml.Algorithm):
           continue
       car_data_new.append(new_row)
     
-    print(car_data_new)
+    # print(car_data_new)
     # print(car_data_new)
     repo.dropCollection("car_data")
     repo.createCollection("car_data")
@@ -89,5 +89,7 @@ class car_data(dml.Algorithm):
 
 
 # # comment this when submitting, just for testing purposes
-car_data.execute()
-  
+# car_data.execute()
+# doc = car_data.provenance()
+# print(doc.get_provn())
+# print(json.dumps(json.loads(doc.serialize()), indent=4))
