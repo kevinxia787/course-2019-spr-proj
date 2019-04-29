@@ -72,7 +72,7 @@ class sea_level(dml.Algorithm):
 
 
 # comment this out when submitting, just for testing
-sea_level.execute()
+# sea_level.execute()
 # doc = sea_level.provenance()
 # print(doc.get_provn())
 # print(json.dumps(json.loads(doc.serialize()), indent=4))
