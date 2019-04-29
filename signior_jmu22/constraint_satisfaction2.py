@@ -149,7 +149,8 @@ class constraint_satisfaction2(dml.Algorithm):
 
         resulting_data.append(new_row)
 
-    # print(resulting_data)
+    # with open('test.txt', 'w') as f:
+    #   print(resulting_data, file=f)  # Python 3.x
     repo.dropCollection("constraint_satisfaction2")
     repo.createCollection("constraint_satisfaction2")
     repo['signior_jmu22.constraint_satisfaction2'].insert_many(resulting_data)
