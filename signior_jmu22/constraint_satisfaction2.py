@@ -30,7 +30,8 @@ class constraint_satisfaction2(dml.Algorithm):
 
     df_population = pd.DataFrame(population)
     df_constraint_satisfaction = pd.DataFrame(constraint_satisfaction)
-
+    df_car_data = pd.DataFrame(car_data)
+    df_carbon_emissions = pd.DataFrame(carbon_emissions)
 
     for row in carbon_emissions:
       if row.get('Country Name') == 'Korea, Dem. People’s Rep.':
@@ -51,17 +52,25 @@ class constraint_satisfaction2(dml.Algorithm):
         row['Country Name'] = 'United States of America'
     
     population_dict = df_population.to_dict(orient='records')
+    carbon_emissions_dict = df_carbon_emissions.to_dict(orient='records')
+    car_data_dict = df_car_data.to_dict(orient='records')
+
     constraint_satisfaction_dict = df_constraint_satisfaction.to_dict(orient='records')
 
     # get countries in original constraint_satisfaction
     # get car data with same countries
     countries = [row.get('country') for row in constraint_satisfaction_dict]
-    print(countries)
     car_data_countries = [row for row in car_data if row.get('Country Name') in countries]
     carbon_emissions = [row for row in carbon_emissions if row.get('Country Name') in countries]
-    print(car_data_countries)
-    
 
+    car_data_world = [row for row in car_data_dict if row.get('Country Name') == 'World'][0]
+    carbon_emissions_world = [row for row in carbon_emissions_dict if row.get('Country Name') == 'World'][0]
+    del car_data_world['2003']
+    del car_data_world['2010']
+
+    car_data_countries.append(car_data_world)
+    carbon_emissions.append(carbon_emissions_world)
+    countries.append("World")
     # modify car data to reflect population, cars per 1000 people to cars per country
     for row in car_data_countries:
       country = row.get('Country Name')
@@ -78,7 +87,6 @@ class constraint_satisfaction2(dml.Algorithm):
     # modify carbon emissions to reflect population, metric tons per capita to metric tons general
     for row in carbon_emissions:
       country = row.get('Country Name')
-      
       population_row = [pop_row for pop_row in population_dict if pop_row.get("Country Name") == country]
       if (len(population_row) == 0):
         continue
@@ -178,8 +186,8 @@ class constraint_satisfaction2(dml.Algorithm):
 
         resulting_data.append(new_row)
 
-    # with open('test.txt', 'w') as f:
-    #   print(resulting_data, file=f)  # Python 3.x
+    with open('test.txt', 'w') as f:
+      print(resulting_data, file=f)  # Python 3.x
     repo.dropCollection("constraint_satisfaction2")
     repo.createCollection("constraint_satisfaction2")
     repo['signior_jmu22.constraint_satisfaction2'].insert_many(resulting_data)
