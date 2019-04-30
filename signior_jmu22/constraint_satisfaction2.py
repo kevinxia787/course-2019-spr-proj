@@ -26,10 +26,29 @@ class constraint_satisfaction2(dml.Algorithm):
     constraint_satisfaction = list(repo.signior_jmu22.countries_change_in_carbon_after_year.find())
     carbon_emissions = list(repo.signior_jmu22.carbon_emissions.find({}, {'_id': 0}))
 
+
+
     df_population = pd.DataFrame(population)
-    df_car_data = pd.DataFrame(car_data)
     df_constraint_satisfaction = pd.DataFrame(constraint_satisfaction)
 
+
+    for row in carbon_emissions:
+      if row.get('Country Name') == 'Korea, Dem. People’s Rep.':
+        row['Country Name'] = 'North Korea'
+      elif row.get('Country Name') == 'Korea, Rep.':
+        row['Country Name'] = 'South Korea'
+      elif row.get('Country Name') == 'United States':
+        row['Country Name'] = 'United States of America'
+    for row in population:
+      if row.get('Country Name') == 'Korea, Dem. People’s Rep.':
+        row['Country Name'] = 'North Korea'
+      elif row.get('Country Name') == 'Korea, Rep.':
+        row['Country Name'] = 'South Korea'
+      elif row.get('Country Name') == 'United States':
+        row['Country Name'] = 'United States of America'
+    for row in car_data:
+      if row.get('Country Name') == 'United States':
+        row['Country Name'] = 'United States of America'
     
     population_dict = df_population.to_dict(orient='records')
     constraint_satisfaction_dict = df_constraint_satisfaction.to_dict(orient='records')
@@ -37,13 +56,19 @@ class constraint_satisfaction2(dml.Algorithm):
     # get countries in original constraint_satisfaction
     # get car data with same countries
     countries = [row.get('country') for row in constraint_satisfaction_dict]
+    print(countries)
     car_data_countries = [row for row in car_data if row.get('Country Name') in countries]
     carbon_emissions = [row for row in carbon_emissions if row.get('Country Name') in countries]
+    print(car_data_countries)
+    
 
     # modify car data to reflect population, cars per 1000 people to cars per country
     for row in car_data_countries:
       country = row.get('Country Name')
-      population_row = [pop_row for pop_row in population_dict if pop_row.get("Country Name") == country][0]
+      population_row = [pop_row for pop_row in population_dict if pop_row.get("Country Name") == country]
+      if len(population_row) == 0:
+        continue
+      population_row = population_row[0]
       for key in row:
         if (key != 'Country Name'):
           # get the keys year
@@ -53,7 +78,11 @@ class constraint_satisfaction2(dml.Algorithm):
     # modify carbon emissions to reflect population, metric tons per capita to metric tons general
     for row in carbon_emissions:
       country = row.get('Country Name')
-      population_row = [pop_row for pop_row in population_dict if pop_row.get("Country Name") == country][0]
+      
+      population_row = [pop_row for pop_row in population_dict if pop_row.get("Country Name") == country]
+      if (len(population_row) == 0):
+        continue
+      population_row = population_row[0]
       for key in row:
         if (key != 'Country Name'):
           if (math.isnan(population_row.get(key))):
@@ -209,7 +238,7 @@ class constraint_satisfaction2(dml.Algorithm):
     return doc
 
 
-# constraint_satisfaction2.execute()
+constraint_satisfaction2.execute()
 # doc = constraint_satisfaction2.provenance()
 # print(doc.get_provn())
 # print(json.dumps(json.loads(doc.serialize()), indent=4))
