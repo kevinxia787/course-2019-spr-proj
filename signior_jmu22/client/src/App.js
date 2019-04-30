@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {  BrowserRouter as Router,  Route, Switch, Link} from 'react-router-dom';
+import {  BrowserRouter as Router,  Route, Switch } from 'react-router-dom';
 import Dashboard from './Dashboard/Dashboard';
 import Visualizations from './Visualizations/Visualizations';
 import Team from './Team/Team';

@@ -1,0 +1,8 @@
+.checkBoxDiv {
+  padding-left: 10px;
+}
+
+.visualDiv {
+  display: flex;
+  flex-direction: row;
+}
