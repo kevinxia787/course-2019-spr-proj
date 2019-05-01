@@ -71,7 +71,7 @@ class population(dml.Algorithm):
 
 
 # comment this when submitting, just for testing purposes
-# population.execute()
+population.execute()
 # doc = population.provenance()
 # print(doc.get_provn())
 # print(json.dumps(json.loads(doc.serialize()), indent=4))

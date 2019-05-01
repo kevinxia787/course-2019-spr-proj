@@ -13,7 +13,8 @@ import matplotlib.pyplot as plt
 from matplotlib.backends.backend_pdf import PdfPages
 import random
 
-class linear_regression(dml.Algorithm):
+
+class lin_reg2(dml.Algorithm):
   contributor = 'signior_jmu22'
   reads = ['signior_jmu22.countries_change_in_carbon_after_year']
   writes = ['signior_jmu22.linear_regression']
@@ -147,7 +148,7 @@ class linear_regression(dml.Algorithm):
 
 
 #comment this when submitting, just for testing purposes
-# linear_regression.execute()
+# lin_reg2.execute()
 # doc = linear_regression.provenance()
 # print(doc.get_provn())
 # print(json.dumps(json.loads(doc.serialize()), indent=4))
