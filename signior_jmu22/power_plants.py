@@ -75,7 +75,7 @@ class power_plants(dml.Algorithm):
 
 
 # comment this out when submitting, just for testing
-power_plants.execute()
+# power_plants.execute()
 # doc = power_plants.provenance()
 # print(doc.get_provn())
 # print(json.dumps(json.loads(doc.serialize()), indent=4))

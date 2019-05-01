@@ -317,7 +317,7 @@ class lin_reg2(dml.Algorithm):
 
 
 #comment this when submitting, just for testing purposes
-lin_reg2.execute()
+# lin_reg2.execute()
 # doc = linear_regression.provenance()
 # print(doc.get_provn())
 # print(json.dumps(json.loads(doc.serialize()), indent=4))

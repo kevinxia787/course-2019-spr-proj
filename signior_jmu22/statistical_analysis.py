@@ -150,7 +150,7 @@ class statistical_analysis(dml.Algorithm):
     return doc
 
 # comment this out when submitting
-statistical_analysis.execute()
-doc = statistical_analysis.provenance()
-print(doc.get_provn())
-print(json.dumps(json.loads(doc.serialize()), indent=4))
+# statistical_analysis.execute()
+# doc = statistical_analysis.provenance()
+# print(doc.get_provn())
+# print(json.dumps(json.loads(doc.serialize()), indent=4))
