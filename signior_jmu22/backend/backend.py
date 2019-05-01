@@ -38,6 +38,26 @@ def car_and_emissions():
   data = db.signior_jmu22.constraint_satisfaction2.find({}, {'_id': 0})
   for row in data:
     result.append(row)
+
+@app.route("/statistics2")
+def statistics2():
+  result = []
+  data = db.signior_jmu22.lin_reg2.find({}, {'_id': 0})
+  for row in data:
+    temp = {}
+    country = list(row.keys())[0]
+    values = row[country]
+    temp['country'] = country
+    temp['slope'] = values[0]
+    temp['intercept'] = values[1]
+    temp['r_value'] = values[2]
+    temp['r_squared'] = values[2] ** 2
+    temp['p_value'] = values[3]
+    
+    result.append(temp)
+
+  statistics2 = json.dumps(result)
+  return statistics2
     
   car_and_emissions = json.dumps(result)
   return car_and_emissions
