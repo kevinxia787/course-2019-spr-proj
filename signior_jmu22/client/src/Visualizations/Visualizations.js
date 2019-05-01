@@ -5,11 +5,12 @@ import Table from 'react-bootstrap/Table';
 import './Visualizations.css';
 import CarDataGraph from  './CarDataGraph/CarDataGraph';
 import CarbonEmissionsGraph from './CarbonEmissionsGraph/CarbonEmissionsGraph';
+import PowerPlants from './PowerPlants/PowerPlants';
 class Visualizations extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {data: [], countriesList: [], graphCountries: [], stats: [], stats2: []}
+    this.state = {data: [], countriesList: [], graphCountries: [], stats: [], stats2: [], constraint: []}
     
     this.getCheckedValues = this.getCheckedValues.bind(this);
   }
@@ -27,15 +28,19 @@ class Visualizations extends Component {
     fetch("http://localhost:5000/statistics", {method: 'GET', dataType:'json'})
       .then(r => r.json())
       .then(r => {
-        console.log(r);
         this.setState({stats: r})
       }).catch(err => console.log(err))
     fetch("http://localhost:5000/statistics2", {method: 'GET', dataType:'json'})
       .then(r => r.json())
       .then(r => {
-        console.log(r);
         this.setState({stats2: r})
       }).catch(err => console.log(err))
+    fetch("http://localhost:5000/constraint_satisfaction", {method: 'GET', dataType:'json'})
+      .then(r => r.json())
+      .then(r => {
+        this.setState({constraint: r})
+      }).catch(err => console.log(err))
+  
   }
 
   getCheckedValues() {
@@ -71,16 +76,13 @@ class Visualizations extends Component {
 
   render() {
     /* TODO: grab values from check box and send data as prop to the charts below */
-    const { data, countriesList, graphCountries, stats, stats2 } = this.state;
+    const { data, countriesList, graphCountries, stats, stats2, constraint } = this.state;
     let colors = this.getColors(graphCountries, countriesList);
-    console.log(stats);
     return (
       <div>
         <div className="visualDiv">
           <div className="checkBoxDiv">
-            <Button onClick={this.getCheckedValues} className="buttonStyling" variant="primary">
-              Change Graph Data
-            </Button>
+            <h5>Change Data Displayed</h5>
             <Form>
               {countriesList.map(countryName => (
                 <div key={`key-${countryName}`}>
@@ -94,11 +96,17 @@ class Visualizations extends Component {
                 </div>
               ))}
             </Form>
+            <Button onClick={this.getCheckedValues} className="buttonStyling" variant="primary">
+              Change Graph Data
+            </Button>
           </div>
           <div>
             <CarDataGraph props={[data, graphCountries, colors]}/>
             <CarbonEmissionsGraph props={[data, graphCountries, colors]}/>
           </div>
+        </div>
+        <div>
+          <PowerPlants props={[constraint, graphCountries, colors]}/>
         </div>
         <hr/>
         <div>

@@ -20,7 +20,7 @@ client = MongoClient('mongodb://signior_jmu22:signior_jmu22@127.0.0.1/repo')
 db = client['repo']
 @app.route("/")
 def home():
-  return "Hello World"
+  return "Backend Up"
 
 @app.route("/statistics")
 def statistics():
@@ -40,6 +40,15 @@ def car_and_emissions():
     result.append(row)
   car_and_emissions = json.dumps(result)
   return car_and_emissions
+
+@app.route("/constraint_satisfaction")
+def power_plant_emissions():
+  result = []
+  data = db.signior_jmu22.countries_change_in_carbon_after_year.find({}, {'_id': 0})
+  for row in data:
+    result.append(row)
+  power_plant_emissions = json.dumps(result)
+  return power_plant_emissions
 
 @app.route("/statistics2")
 def statistics2():
