@@ -14,6 +14,7 @@ from matplotlib.backends.backend_pdf import PdfPages
 import random
 from scipy import stats
 import math
+import collections
 
 
 class lin_reg2(dml.Algorithm):
@@ -40,15 +41,16 @@ class lin_reg2(dml.Algorithm):
     results2 = df2.to_dict(orient = "records")
     
     countries = [rows.get('country') for rows in results2]
+  
+        
     
     
-    
- 
     
     
     temp = list(repo.signior_jmu22.carbon_emissions.find())
     df = pd.DataFrame(temp)
     results = df.to_dict(orient = "records")
+
        
     for row in results:
       if row.get('Country Name') == 'Korea, Dem. People’s Rep.':
@@ -59,16 +61,46 @@ class lin_reg2(dml.Algorithm):
         row['Country Name'] = 'United States of America'
    
 
+    
 
 
 
     temp3 = list(repo.signior_jmu22.power_plants_established_date_by_country.find())
     df3 = pd.DataFrame(temp3)
     results3 = df3.to_dict(orient = "records")
+
+    year_arr = []
+    for pp in results3:
+        for year in pp['years']:
+            year_arr.append(year)
+        
+    lst = collections.Counter(year_arr)
+    #print(sorted(lst.items()))  
     
+    
+    years = []
+    for year in range(1960, 2015):
+        count = 0 
+        for x in sorted(lst.items()):
+            count += x[1]
+            if x[0] == year:
+                years.append({year : count})
+    #print(years)
+    
+   
+   
+
+
+        
+            
+                
+            
+        
     temp4 = list(repo.signior_jmu22.population.find())
     df4 = pd.DataFrame(temp4)
     results4= df4.to_dict(orient = "records")
+    
+
          
     for row in results4:
       if row.get('Country Name') == 'Korea, Dem. People’s Rep.':
@@ -77,8 +109,54 @@ class lin_reg2(dml.Algorithm):
         row['Country Name'] = 'South Korea'
       elif row.get('Country Name') == 'United States':
         row['Country Name'] = 'United States of America'
+     
+
+    for rows in results:
+        if (rows.get('Country Name') == "World"):
+            carbon = rows
+            
+    for rows in results4:
+        if (rows.get('Country Name') == "World"):
+            population = rows
     
     
+    
+    
+    total = [{year: carbon[str(year)] * population[str(year)]} for year in range(1960, 2015)]
+    
+    world_carbon_arr = []
+    
+
+    for entry in total:
+        world_carbon_arr.append(list((entry.values())))
+        
+        
+    foo = []
+
+    for entry in world_carbon_arr:
+        for x in entry:
+            foo.append(x)
+            
+    #world population carbon emissions array)
+    #print(foo)
+
+    wrld_yrs = []
+    for entry in years:
+        wrld_yrs.append(list((entry.values())))
+    
+    foo2 = []
+    #print(wrld_yrs)
+    
+    for entry in wrld_yrs:
+        for x in entry:
+            
+            foo2.append(x)
+    #print(foo2)
+    
+    
+    data_world = stats.linregress(np.array(foo2), np.array(foo))
+
+
     
     carbon_emissions= [rows for rows in results if rows.get('Country Name') in countries]
     power_plants =[rows for rows in results3 if rows.get('country') in countries]
@@ -106,6 +184,10 @@ class lin_reg2(dml.Algorithm):
         country_carbon= []
         worldplantscount = 0
         wordcarboncount = 0 
+        
+        
+        
+        
         power_plant_years = sorted(power_plant_data_row['years'])
         for curr_year in power_plant_years:
             if (curr_year > 2014):
@@ -133,6 +215,8 @@ class lin_reg2(dml.Algorithm):
         templist['plants'].append(country_plants)
        
         result.append(templist)
+        
+
 
     #print(result)
     stats_array = []
@@ -147,7 +231,11 @@ class lin_reg2(dml.Algorithm):
             data = stats.linregress(np.array(country['plants'][0]), np.array(country['carbon'][0]))
         
             stats_array.append({country['country'] : data})
-
+            
+            
+        
+    stats_array.append({'World' : data_world})
+     
     print(stats_array)
 
 
@@ -262,7 +350,7 @@ class lin_reg2(dml.Algorithm):
 
 
 #comment this when submitting, just for testing purposes
-#lin_reg2.execute()
+lin_reg2.execute()
 # doc = linear_regression.provenance()
 # print(doc.get_provn())
 # print(json.dumps(json.loads(doc.serialize()), indent=4))
