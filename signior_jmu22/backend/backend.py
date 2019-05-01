@@ -38,6 +38,8 @@ def car_and_emissions():
   data = db.signior_jmu22.constraint_satisfaction2.find({}, {'_id': 0})
   for row in data:
     result.append(row)
+  car_and_emissions = json.dumps(result)
+  return car_and_emissions
 
 @app.route("/statistics2")
 def statistics2():
@@ -47,6 +49,8 @@ def statistics2():
     temp = {}
     country = list(row.keys())[0]
     values = row[country]
+    if (values[2] == 1 or values[2] == -1):
+      continue
     temp['country'] = country
     temp['slope'] = values[0]
     temp['intercept'] = values[1]
@@ -59,5 +63,4 @@ def statistics2():
   statistics2 = json.dumps(result)
   return statistics2
     
-  car_and_emissions = json.dumps(result)
-  return car_and_emissions
+  

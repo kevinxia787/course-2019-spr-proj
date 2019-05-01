@@ -9,7 +9,7 @@ class Visualizations extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {data: [], countriesList: [], graphCountries: [], stats: []}
+    this.state = {data: [], countriesList: [], graphCountries: [], stats: [], stats2: []}
     
     this.getCheckedValues = this.getCheckedValues.bind(this);
   }
@@ -29,6 +29,12 @@ class Visualizations extends Component {
       .then(r => {
         console.log(r);
         this.setState({stats: r})
+      }).catch(err => console.log(err))
+    fetch("http://localhost:5000/statistics2", {method: 'GET', dataType:'json'})
+      .then(r => r.json())
+      .then(r => {
+        console.log(r);
+        this.setState({stats2: r})
       }).catch(err => console.log(err))
   }
 
@@ -65,7 +71,7 @@ class Visualizations extends Component {
 
   render() {
     /* TODO: grab values from check box and send data as prop to the charts below */
-    const { data, countriesList, graphCountries, stats } = this.state;
+    const { data, countriesList, graphCountries, stats, stats2 } = this.state;
     let colors = this.getColors(graphCountries, countriesList);
     console.log(stats);
     return (
@@ -120,6 +126,45 @@ class Visualizations extends Component {
             <tbody>
               {
                 stats.map((entry, index) => (
+                  <tr key={`key-${entry.country}`}>
+                    <th style={{fontWeight: 'normal'}}>{`${entry.country}`}</th>
+                    <th style={{fontWeight: 'normal'}}>{`${entry.slope}`}</th>
+                    <th style={{fontWeight: 'normal'}}>{`${entry.intercept}`}</th>
+                    <th style={{fontWeight: 'normal'}}>{`${entry.r_value}`}</th>
+                    <th style={{fontWeight: 'normal'}}>{`${entry.r_squared}`}</th>
+                    <th style={{fontWeight: 'normal', color: ((`${entry.p_value}` < 0.06) ? 'green' : 'red')}}>{`${entry.p_value}`}</th>
+                  </tr>
+                ))
+              }
+            </tbody>
+          </Table>
+        </div>
+        <hr/>
+        <div>
+          <h5 style={{textAlign:"center"}}>Statistical Analysis for Number of Power Plants vs. Carbon Emissions</h5>
+          <div style={{marginLeft: "10px"}}>
+            <p>We performed a Linear Regression test on the above dataset to determine if which of the following hypothesis is true:</p>
+            <ol>
+              <li>H0: No relationship between increase in the number of power plants and CO2 emissions.</li>
+              <li>H1: There exists a linear relationship between the increase in the number of power plants and CO2 emissions.</li>
+            </ol>
+            <p>Like the previous, our alpha value is 0.05.</p>
+          </div>
+         
+          <Table>
+            <thead>
+              <tr>
+                <th>Country</th>
+                <th>Slope</th>
+                <th>Intercept</th>
+                <th>R-Value</th>
+                <th>R-Squared</th>
+                <th>P-Value</th>
+              </tr>
+            </thead>
+            <tbody>
+              {
+                stats2.map((entry, index) => (
                   <tr key={`key-${entry.country}`}>
                     <th style={{fontWeight: 'normal'}}>{`${entry.country}`}</th>
                     <th style={{fontWeight: 'normal'}}>{`${entry.slope}`}</th>
