@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import Table from 'react-bootstrap/Table';
 import './Visualizations.css';
 import CarDataGraph from  './CarDataGraph/CarDataGraph';
 import CarbonEmissionsGraph from './CarbonEmissionsGraph/CarbonEmissionsGraph';
@@ -8,7 +9,7 @@ class Visualizations extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {data: [], countriesList: [], graphCountries: []}
+    this.state = {data: [], countriesList: [], graphCountries: [], stats: []}
     
     this.getCheckedValues = this.getCheckedValues.bind(this);
   }
@@ -22,6 +23,12 @@ class Visualizations extends Component {
           countries.push(row['country'])
         }
         this.setState({data: r, countriesList: countries})
+      }).catch(err => console.log(err))
+    fetch("http://localhost:5000/statistics", {method: 'GET', dataType:'json'})
+      .then(r => r.json())
+      .then(r => {
+        console.log(r);
+        this.setState({stats: r})
       }).catch(err => console.log(err))
   }
 
@@ -58,33 +65,76 @@ class Visualizations extends Component {
 
   render() {
     /* TODO: grab values from check box and send data as prop to the charts below */
-    const { data, countriesList, graphCountries } = this.state;
+    const { data, countriesList, graphCountries, stats } = this.state;
     let colors = this.getColors(graphCountries, countriesList);
+    console.log(stats);
     return (
-      <div className="visualDiv">
-        <div className="checkBoxDiv">
-          <Button onClick={this.getCheckedValues} className="buttonStyling" variant="primary">
-            Change Graph Data
-          </Button>
-          <Form>
-            {countriesList.map(countryName => (
-              <div key={`key-${countryName}`}>
-                <Form.Check 
-                  custom
-                  type={'checkbox'}
-                  id={`id-${countryName}`}
-                  label={`${countryName}`}
-                />
-              </div>
-            ))}
-            
-          </Form>
+      <div>
+        <div className="visualDiv">
+          <div className="checkBoxDiv">
+            <Button onClick={this.getCheckedValues} className="buttonStyling" variant="primary">
+              Change Graph Data
+            </Button>
+            <Form>
+              {countriesList.map(countryName => (
+                <div key={`key-${countryName}`}>
+                  <Form.Check 
+                    className="formStyle"
+                    custom
+                    type={'checkbox'}
+                    id={`id-${countryName}`}
+                    label={`${countryName}`}
+                  />
+                </div>
+              ))}
+            </Form>
+          </div>
+          <div>
+            <CarDataGraph props={[data, graphCountries, colors]}/>
+            <CarbonEmissionsGraph props={[data, graphCountries, colors]}/>
+          </div>
         </div>
+        <hr/>
         <div>
-          <CarDataGraph props={[data, graphCountries, colors]}/>
-          <CarbonEmissionsGraph props={[data, graphCountries, colors]}/>
+          <h5 style={{textAlign:"center"}}>Statistical Analysis for Vehicle Yearly Increase vs. Carbon Emissions</h5>
+          <div style={{marginLeft: "10px"}}>
+            <p>We performed a Linear Regression test on the above dataset to determine if which of the following hypothesis is true:</p>
+            <ol>
+              <li>H0: No relationship between increase in vehicles and CO2 emissions.</li>
+              <li>H1: There exists a linear relationship between the increase in vehicles and CO2 emissions.</li>
+            </ol>
+            <p>In this scenario, our alpha value is 0.05.</p>
+          </div>
+         
+          <Table>
+            <thead>
+              <tr>
+                <th>Country</th>
+                <th>Slope</th>
+                <th>Intercept</th>
+                <th>R-Value</th>
+                <th>R-Squared</th>
+                <th>P-Value</th>
+              </tr>
+            </thead>
+            <tbody>
+              {
+                stats.map((entry, index) => (
+                  <tr key={`key-${entry.country}`}>
+                    <th style={{fontWeight: 'normal'}}>{`${entry.country}`}</th>
+                    <th style={{fontWeight: 'normal'}}>{`${entry.slope}`}</th>
+                    <th style={{fontWeight: 'normal'}}>{`${entry.intercept}`}</th>
+                    <th style={{fontWeight: 'normal'}}>{`${entry.r_value}`}</th>
+                    <th style={{fontWeight: 'normal'}}>{`${entry.r_squared}`}</th>
+                    <th style={{fontWeight: 'normal', color: ((`${entry.p_value}` < 0.06) ? 'green' : 'red')}}>{`${entry.p_value}`}</th>
+                  </tr>
+                ))
+              }
+            </tbody>
+          </Table>
         </div>
       </div>
+     
     )
   }
 }
